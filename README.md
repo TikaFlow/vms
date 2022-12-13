@@ -1,5 +1,7 @@
 # vms
 
+English | [简体中文](README_CN.md)
+
 Vertical Management Suite(vms) is a utility suite for big data, or more.
 
 # Environment
