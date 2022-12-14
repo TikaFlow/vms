@@ -14,7 +14,12 @@ Vertical Management Suite(vms) is a utility suite for big data, or more.
 
 # Usage
 
-// TODO
+```bash
+# run the main program
+vms
+# then, in the vms-cli type help to show hlep info
+help
+```
 
 # Uninstall
 

@@ -1,0 +1,7 @@
+Usage: COMMAND [options]
+
+List of Commands:
+
+help        print help info, vms help info by default
+exit        exit vms-cli
+info        print vms info

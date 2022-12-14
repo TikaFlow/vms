@@ -1,0 +1,48 @@
+#! /bin/bash
+
+exit(){
+    echo -e "\033[34mexit is disabled, please use return statement.\033[0m"
+}
+
+info() {
+    echo -e "Vertical Management Suite \033[35m${Version}\033[0m, Powered by ${Author}"
+}
+
+help() {
+    if [ $# -lt 1 ]; then
+        info
+        cat man/vms
+    else
+        cat man/${1}
+    fi
+}
+
+do_vms() {
+    eval set -- ${cmd}
+    vms_cmd=${1}
+    [[ ${vms_cmd} = "do_vms" ]] && echo -e "\033[34mBad Command!\033[0m" && return -1
+    [[ ${vms_cmd} = "exit" ]] && unset -f exit && exit
+    if [ "$(type -t ${vms_cmd})" = "function" ]; then
+        shift
+        ${vms_cmd} "$@"
+    else
+        echo -e "\033[34m${1}: Command Not Found!\033[0m"
+    fi
+}
+
+source conf/vms.properties
+source conf/module.properties
+source conf/plugins
+info
+echo
+while true; do
+    wd=$(pwd)
+    read -rp "[vms-cli ${wd}]# " cmd
+    if [ "!" == "${cmd:0:1}" ]; then
+        cmd=${cmd:1}
+        ${cmd}
+    else
+        do_vms "${cmd}"
+    fi
+    echo
+done

@@ -1,0 +1,5 @@
+# plugin should be registered as a function
+# if it's complex, you can also call several scripts in the function
+test(){
+    plugin/test.sh $@
+}
