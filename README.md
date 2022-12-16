@@ -16,8 +16,8 @@ Vertical Management Suite(vms) is a utility suite for big data, or more.
 
 ```bash
 # run the main program
-vms
-# then, in the vms-cli type help to show hlep info
+vms.man.sh
+# then, in the vms.man.sh-cli type help to show hlep info
 help
 ```
 

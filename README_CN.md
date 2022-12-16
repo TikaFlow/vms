@@ -14,8 +14,8 @@
 
 ```bash
 # 运行主程序
-vms
-# 输入 help 查看帮助信息
+vms.man.sh
+# 进入命令行后，输入 help 查看帮助信息
 help
 ```
 

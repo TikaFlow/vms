@@ -1,48 +1,20 @@
 #! /bin/bash
 
-exit(){
-    echo -e "\033[34mexit is disabled, please use return statement.\033[0m"
-}
+if [ -L "$0" ]; then
+    VMS_HOME=$(cd -P $(dirname $(readlink "$0")); pwd)
+else
+    VMS_HOME=$(cd -P $(dirname "$0"); pwd)
+fi
 
-info() {
-    echo -e "Vertical Management Suite \033[35m${Version}\033[0m, Powered by ${Author}"
-}
-
-help() {
-    if [ $# -lt 1 ]; then
-        info
-        cat man/vms
-    else
-        cat man/${1}
-    fi
-}
-
-do_vms() {
-    eval set -- ${cmd}
-    vms_cmd=${1}
-    [[ ${vms_cmd} = "do_vms" ]] && echo -e "\033[34mBad Command!\033[0m" && return -1
-    [[ ${vms_cmd} = "exit" ]] && unset -f exit && exit
-    if [ "$(type -t ${vms_cmd})" = "function" ]; then
-        shift
-        ${vms_cmd} "$@"
-    else
-        echo -e "\033[34m${1}: Command Not Found!\033[0m"
-    fi
-}
-
-source conf/vms.properties
-source conf/module.properties
-source conf/plugins
-info
+. "${VMS_HOME}"/conf/vms.properties
+. "${VMS_HOME}"/conf/module.properties
+. "${VMS_HOME}"/plugin/vms.sh
+. "${VMS_HOME}"/conf/plugins
+echo -e "Vertical Management Suite \033[35m${Version}\033[0m, Powered by \033[34m${Author}\033[0m"
 echo
 while true; do
     wd=$(pwd)
-    read -rp "[vms-cli ${wd}]# " cmd
-    if [ "!" == "${cmd:0:1}" ]; then
-        cmd=${cmd:1}
-        ${cmd}
-    else
-        do_vms "${cmd}"
-    fi
+    read -ep $'\033[35m'"[vms-cli ${wd}]# "$'\033[0m' cmd
+    vms_main "${cmd}"
     echo
 done

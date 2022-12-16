@@ -1,0 +1,14 @@
+Usage: COMMAND [options] [arguments]
+
+List of Commands:
+
+help [plugin]
+    plugin, print plugin help info, vms help info by default
+exit
+    exit vms-cli
+info
+    print vms info
+his[tory] [-c | index]  show history command
+    -c,     clear history
+    index,  run the command again of the index.
+            NOTE THAT IF THE COMMAND IS ALSO CALLS HISTORY COMMAND, IT WILL BE CALLED RECURSIVELY!

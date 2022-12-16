@@ -1,5 +1,8 @@
 # plugin should be registered as a function
 # if it's complex, you can also call several scripts in the function
+# exit should never used to terminate function(and is disabled), please use return instead.
+
+# This is a test plugin
 test(){
     plugin/test.sh $@
 }
