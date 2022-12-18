@@ -1,9 +1,9 @@
 #! /bin/bash
 
-if [ -L "$0" ]; then
-    VMS_HOME=$(cd -P $(dirname $(readlink "$0")); pwd)
+if [ -L "${0}" ]; then
+    VMS_HOME=$(cd -P $(dirname $(readlink "${0}")); pwd)
 else
-    VMS_HOME=$(cd -P $(dirname "$0"); pwd)
+    VMS_HOME=$(cd -P $(dirname "${0}"); pwd)
 fi
 
 . "${VMS_HOME}"/conf/vms.properties

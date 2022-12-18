@@ -2,13 +2,20 @@ Usage: COMMAND [options] [arguments]
 
 List of Commands:
 
+#COMMAND
+    run bash command.
+!!
+    rerun the last command(Just like in bash).
+:COMMAND
+    search history commands that contains COMMAND.
 help [plugin]
-    plugin, print plugin help info, vms help info by default
+    plugin, print plugin help info, vms help info by default.
 exit
-    exit vms-cli
+    exit vms-cli.
 info
     print vms info
 his[tory] [-c | index]  show history command
-    -c,     clear history
-    index,  run the command again of the index.
+    -c,     clear history.
+    -w,     cut history file so that it's number of rows never exceeds limit , automatic called when exit.
+    index,  rerun the command of the index.
             NOTE THAT IF THE COMMAND IS ALSO CALLS HISTORY COMMAND, IT WILL BE CALLED RECURSIVELY!
