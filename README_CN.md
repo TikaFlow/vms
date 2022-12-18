@@ -10,14 +10,34 @@
 
 // TODO
 
-# 使用
+# 用法
 
 ```bash
 # 运行主程序
-vms.man.sh
+vms
 # 进入命令行后，输入 help 查看帮助信息
 help
 ```
+
+命令列表:
+
+    #COMMAND
+        运行外部bash命令.
+    !!
+        重新运行上一条命令(与在bash中一样).
+    :COMMAND
+        搜索包含COMMAND的历史命令.
+    help [plugin]
+        plugin: 查看plugin的帮助信息, 默认为vms的帮助信息.
+    exit
+        退出vms命令行.
+    info
+        查看vms信息
+    his[tory] [-c | -w | index]  查看历史命令
+        -c:     清空历史命令.
+        -w:     裁剪历史命令文件使之不超过行数限制, 退出前自动调用.
+        index:  重新运行指定索引的命令.
+            注意：如果历史命令也调用历史命令，将会递归执行，直到调用普通命令!
 
 # 卸载
 
