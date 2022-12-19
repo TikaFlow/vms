@@ -8,6 +8,8 @@ List of Commands:
     rerun the last command(Just like in bash).
 :COMMAND
     search history commands that contains COMMAND.
+cd
+    change directory just like in bash.
 help [plugin]
     plugin: print plugin help info, vms help info by default.
 exit

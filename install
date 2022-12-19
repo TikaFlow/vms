@@ -1,3 +1,19 @@
 #! /bin/bash
+[ "$#" -eq 0 ] && echo "Please specify installation path!" && exit -1
+
+echo "Installing vms..."
+
+link_dir="$HOME"/bin
+[ ! -d "${1}" ] && mkdir -p "${1}"/log
+install_dir=$(cd -P "${1}"; pwd)
+current_dir=$(cd -P $(dirname "${0}"); pwd)
+
+[ ! -d "${link_dir}" ] && mkdir -p "${link_dir}"
+mv -f "${current_dir}"/* "${install_dir}"
+mv -f "${install_dir}"/uninstall "${current_dir}"
+ln -s "${install_dir}"/vms "${link_dir}"/vms
+rm -f "${install_dir}"/install
+
+echo "${install_dir}" > "${current_dir}"/install.path
 
 echo "Install complete."

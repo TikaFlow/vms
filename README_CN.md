@@ -4,11 +4,21 @@
 
 # 环境
 
-// TODO
+需要Linux/Bash环境.
 
 # 安装
 
-// TODO
+下载并解压tar包:
+
+```bash
+tar -zxvf vms.tar.gz
+```
+
+运行安装脚本并指定空文件夹作为安装路径:
+
+```bash
+vms/install install/path
+```
 
 # 用法
 
@@ -27,6 +37,8 @@ help
         重新运行上一条命令(与在bash中一样).
     :COMMAND
         搜索包含COMMAND的历史命令.
+    cd
+        与在bash中一样切换目录.
     help [plugin]
         plugin: 查看plugin的帮助信息, 默认为vms的帮助信息.
     exit
@@ -41,4 +53,8 @@ help
 
 # 卸载
 
-// TODO
+运行卸载脚本:
+
+```bash
+vms/uninstall
+```

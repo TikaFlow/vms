@@ -4,5 +4,5 @@
 
 # This is a test plugin
 test(){
-    plugin/test.sh $@
+    "${VMS_HOME}"/plugin/test.sh $@
 }

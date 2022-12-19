@@ -6,11 +6,21 @@ Vertical Management Suite(vms) is a utility suite for big data, or more.
 
 # Environment
 
-// TODO
+Linux/Bash needed.
 
 # Install
 
-// TODO
+download and unzip the tar package:
+
+```bash
+tar -zxvf vms.tar.gz
+```
+
+then, run the install script and specify a empty folder as installation path:
+
+```bash
+vms/install install/path
+```
 
 # Usage
 
@@ -29,6 +39,8 @@ List of Commands:
         rerun the last command(Just like in bash).
     :COMMAND
         search history commands that contains COMMAND.
+    cd
+        change directory just like in bash.
     help [plugin]
         plugin: print plugin help info, vms help info by default.
     exit
@@ -43,4 +55,8 @@ List of Commands:
 
 # Uninstall
 
-// TODO
+run the uninstall script:
+
+```bash
+vms/uninstall
+```

@@ -1,0 +1,11 @@
+#! /bin/bash
+echo "Uninstalling vms..."
+
+link_target="$HOME"/bin
+current_dir=$(cd -P $(dirname "${0}"); pwd)
+
+unlink "${link_target}"/vms
+cat "${current_dir}"/install.path | xargs rm -rf
+rm -rf "${current_dir}"
+
+echo "Uninstall complete."
