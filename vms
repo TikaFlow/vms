@@ -1,9 +1,15 @@
 #! /bin/bash
 
 if [ -L "${0}" ]; then
-    VMS_HOME=$(cd -P $(dirname $(readlink "${0}")); pwd)
+    VMS_HOME=$(
+        cd -P $(dirname $(readlink "${0}"))
+        pwd
+    )
 else
-    VMS_HOME=$(cd -P $(dirname "${0}"); pwd)
+    VMS_HOME=$(
+        cd -P $(dirname "${0}")
+        pwd
+    )
 fi
 
 . "${VMS_HOME}"/conf/vms.properties
@@ -12,20 +18,21 @@ fi
 his_file="${VMS_HOME}"/log/vms.history
 
 # disable exit
-exit(){
+exit() {
     echo -e "\e[31mexit is disabled, please use return statement.\e[0m"
 }
 
 help() {
-    if [ "$#" -eq 0 ]; then
+    if [ $# -lt 1 ]; then
+        version
         cat "${VMS_HOME}"/man/vms.man
     else
         cat "${VMS_HOME}"/man/"${1}".man
     fi
 }
 
-version(){
-    echo -e "Vertical Management Suite \e[35m${Version}\e[0m, Powered by \e[33m${Author}\e[0m"
+version() {
+    echo -e "Vertical Management System \e[35m${Version}\e[0m, Powered by \e[33m${Author}\e[0m"
 }
 
 info() {
@@ -33,85 +40,102 @@ info() {
     echo -e "// TODO shows infos of vms, modules, system, etc."
 }
 
-vcd(){
-    cd "$@"
+mrun() {
+    [ $# -lt 1 ] && echo -e "Parameter missing!" && return 1
+    mrun_paras=$(getopt -o +h: -n "${FUNCNAME[0]}" -- "$@")
+    [ $? -ne 0 ] && return 1
+    eval set -- "${mrun_paras}"
+    while true; do
+        case "${1}" in
+        -h)
+            Nodes="${2}"
+            shift 2
+            ;;
+        --)
+            shift
+            ;;
+        *)
+            break
+            ;;
+        esac
+    done
+
+    o_ifs="${IFS}"
+    IFS=','
+    hosts=(${Nodes})
+    IFS="${o_ifs}"
+
+    for host in "${hosts[@]}"; do
+        echo "======= running command [$@] on ${host}... ======="
+        # ssh "${User}"@"${host}" "$@"
+    done
 }
 
-history(){
+m(){
+    mrun "$@"
+}
 
-    if [ "$#" -eq 0 ]; then
+history() {
+
+    if [ $# -lt 1 ]; then
         cat -n "${his_file}"
         echo -e "\e[33mNote: Navigation key viewing history is currently not supported.\e[0m"
         return 0
     fi
 
     his_paras=$(getopt -o +cw -n "${FUNCNAME[0]}" -- "$@")
-    [ "$?" != 0 ] && return 1
+    [ $? -ne 0 ] && return 1
     eval set -- "${his_paras}"
-    while true ; do
+    while true; do
         case "${1}" in
-            -c)
-                shift
-                echo -n "" > "${his_file}"
-                return 0
-                ;;
-            -w)
-                shift
-                history_rows=$(wc -l < "${his_file}")
-                of_rows=$[history_rows-HistoryMax]
-                [ "${of_rows}" -gt 0 ] && sed -i "1,${of_rows}d" "${his_file}"
-                return 0
-                ;;
-            --)
-                shift
-                ;;
-            *)
-                [[ "${1}" = *[!0-9]* ]] && echo -e "\e[31m${1} is not a NUMBER!\e[0m" && return 2
-                echo $(sed -n "${1},${1}p" "${his_file}")
-                vms_main $(sed -n "${1},${1}p" "${his_file}")
-                return 0
-                ;;
+        -c)
+            shift
+            echo -n "" >"${his_file}"
+            return 0
+            ;;
+        -w)
+            shift
+            history_rows=$(wc -l <"${his_file}")
+            of_rows=$((history_rows - HistoryMax))
+            [ "${of_rows}" -gt 0 ] && sed -i "1,${of_rows}d" "${his_file}"
+            return 0
+            ;;
+        --)
+            shift
+            ;;
+        *)
+            [[ "${1}" == *[!0-9]* ]] && echo -e "\e[31m${1} is not a NUMBER!\e[0m" && return 2
+            echo $(sed -n "${1},${1}p" "${his_file}")
+            do_vms $(sed -n "${1},${1}p" "${his_file}")
+            return 0
+            ;;
         esac
     done
 }
 
-his(){
+his() {
     history "$@"
 }
 
-:(){
+:() {
     cat -n "${his_file}" | grep "$*"
 }
 
-!!(){
-    history $[$(wc -l < "${his_file}")-1]
-}
-
-vms_main(){
-    echo "$@" >> "${his_file}"
-    cmd="$@"
-    if [ "#" == "${cmd:0:1}" ]; then
-        cmd="${cmd:1}"
-        ${cmd}
-    elif [ ":" == "${cmd:0:1}" ]; then
-        cmd="${cmd:1}"
-        : "${cmd}"
-    else
-        do_vms "${cmd}"
-    fi
+!!() {
+    history $[$(wc -l < "${his_file}") - 1]
 }
 
 do_vms() {
-    eval set -- "${cmd}"
+    echo "$@" >>"${his_file}"
+    eval set -- "$@"
     vms_cmd="${1}"
-    [[ "${vms_cmd}" = "do_vms" ]] && echo -e "\e[31mBad Command!\e[0m" && return -1
-    [[ "${vms_cmd}" = "exit" ]] && history -w && unset -f exit && exit
-    [[ "${vms_cmd}" = "cd" ]] && vms_cmd="vcd"
-    if [ "$(type -t "${vms_cmd}")" = "function" ]; then
+    [[ "${vms_cmd}" == "do_vms" ]] && echo -e "\e[31mBad Command!\e[0m" && return -1
+    [[ "${vms_cmd}" == "exit" ]] && history -w && unset -f exit && exit
+    if [ $(type -t "${vms_cmd}") ]; then
         shift
         ${vms_cmd} "$@"
     else
-        echo -e "\e[31m${1}: Command Not Found!\e[0m"
+        echo -e "\e[31m${vms_cmd}: Command Not Found!\e[0m"
     fi
 }
 
@@ -119,9 +143,11 @@ do_vms() {
 version
 echo
 
+alias m='mrun'
+
 while true; do
     wd=$(pwd)
     read -ep $'\e[35m'"[vms-cli ${wd}]# "$'\e[0m' cmd
-    vms_main "${cmd}"
-    echo
+    [ -z "${cmd}" ] && continue
+    do_vms "${cmd}"
 done
