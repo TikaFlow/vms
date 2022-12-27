@@ -40,7 +40,7 @@ help
     : STRING
         搜索包含STRING的历史命令.
     help [plugin]
-        查看plugin的帮助信息, 默认为vms的帮助信息.
+        查看帮助信息, 默认为vms的帮助信息.
         plugin
             查看plugin的帮助信息.
     exit
