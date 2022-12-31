@@ -33,7 +33,7 @@ vms
 help
 ```
 
-List of Commands:
+Part of Commands:
 
     COMMAND
         run bash command if it doesn't conflict with vms command.
@@ -54,14 +54,12 @@ List of Commands:
         -c
             clear history.
         -w
-            cut history file so that it's number of rows never exceeds limit, automatic called when exit.
+            flush history file buffers, automatic called when exit.
         index
             rerun the command of the index.
             NOTE THAT IF THE COMMAND ITSELF ALSO CALLS HISTORY COMMAND, IT WILL BE CALLED RECURSIVELY!
     m[run]
-        run command on several hosts one by one.
-        -h hosts
-            run command on hosts instead of default nodes.
+        run command on hosts(specified by variable Nodes) one by one.
 
 # Uninstall
 

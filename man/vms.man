@@ -21,11 +21,16 @@ his[tory] [-c | -w | index]
     -c
         clear history.
     -w
-        cut history file so that it's number of rows never exceeds limit, automatic called when exit.
+        flush history file buffers, automatic called when exit.
     index
         rerun the command of the index.
         NOTE THAT IF THE COMMAND ITSELF ALSO CALLS HISTORY COMMAND, IT WILL BE CALLED RECURSIVELY!
 m[run]
-    run command on several hosts one by one.
-    -h hosts
-        run command on hosts instead of default nodes.
+    run command on hosts(specified by variable Nodes) one by one. You may need to enter password
+    if no key is configured for login.
+up[date] VAR=VALUE[ VAR2=VALUE2 ...]
+    update EXIST variables.
+start MODULE[ MODULE2 ...]
+    start modules. modules can be disordered, and their dependencies will also be started.
+sync
+    sync files to hosts(specified by variable Nodes).
