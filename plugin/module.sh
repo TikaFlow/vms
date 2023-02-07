@@ -19,7 +19,8 @@ get_hosts() {
 }
 
 verify_module() {
-    v_status=0
+    local v_status=0
+    local v_module
     for v_module in "$@"; do
         is_in "${v_module}" "${Modules[@]}" && continue
         echo "unrecognized module: ${v_module}!"

@@ -17,6 +17,10 @@ fi
 . "${VMS_HOME}"/conf/plugins
 his_file="${VMS_HOME}"/log/vms.history
 
+#########################################
+############### functions ###############
+#########################################
+
 # disable exit
 exit() {
     echo -e "\e[31mexit is disabled, please use return statement.\e[0m"
@@ -41,15 +45,13 @@ info() {
 }
 
 status() {
-    echo "// TODO"
+    # -s silent ==> ignore echo
     [[ "${1}" == "-s" ]] && local silent_flag="yes" && shift
-    # -s silent==> ignore echo
-    local s_code
     local res
+    local s_code
     res=$(status_"${1}")
     s_code=$?
     [ "${silent_flag}" ] || echo "${res}"
-    echo "${s_code}"
     return "${s_code}"
 }
 
@@ -88,7 +90,7 @@ sync() {
 update() {
     for seg in "$@"; do
         local var="${seg%%=*}"
-        [ "${!var}" ] && eval "${seg}" || echo "${var} is not assigned"
+        [ "${!var}" ] && eval "${seg}" || echo "${var} is not assigned!"
     done
 }
 
@@ -173,7 +175,9 @@ do_vms() {
     fi
 }
 
-# Main body
+#########################################
+############### Main body ###############
+#########################################
 version
 echo
 
